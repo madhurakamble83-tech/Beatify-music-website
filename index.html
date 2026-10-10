@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beatify Music</title>
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#121212;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:90px;
+    width:230px;
+    background:#000;
+    padding:25px 20px;
+}
+
+.logo{
+    color:#1ed760;
+    font-size:28px;
+    margin-bottom:40px;
+}
+
+.menu p,
+.playlist{
+    color:#aaa;
+    cursor:pointer;
+    font-weight:bold;
+    margin:22px 0;
+}
+
+.menu p:hover,
+.playlist:hover{
+    color:white;
+}
+
+.sidebar h4{
+    color:#777;
+    font-size:12px;
+    margin-top:40px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+    margin-left:230px;
+    padding:20px 30px 120px;
+}
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.topbar button{
+    width:35px;
+    height:35px;
+    border:none;
+    border-radius:50%;
+    background:#050505;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+#search{
+    width:420px;
+    padding:13px 20px;
+    border:none;
+    outline:none;
+    border-radius:25px;
+    font-size:14px;
+}
+
+.profile{
+    margin-left:auto;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#1ed760;
+    color:black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+
+h2{
+    margin:25px 0 18px;
+}
+
+
+/* =========================
+   QUICK SONGS
+========================= */
+
+.quick{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:35px;
+}
+
+.quick-item{
+    display:flex;
+    align-items:center;
+    background:#292929;
+    border-radius:6px;
+    overflow:hidden;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.quick-item:hover{
+    background:#3a3a3a;
+}
+
+.quick-item img{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    margin-right:12px;
+}
+
+
+/* =========================
+   SONG CARDS
+========================= */
+
+.song-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(170px,1fr));
+    gap:20px;
+}
+
+.song-card{
+    background:#181818;
+    padding:14px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.song-card:hover{
+    background:#282828;
+    transform:translateY(-3px);
+}
+
+.song-card img{
+    width:100%;
+    aspect-ratio:1;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.song-card h3{
+    font-size:15px;
+    margin:12px 0 6px;
+}
+
+.song-card p{
+    color:#aaa;
+    font-size:13px;
+    margin:0;
+    line-height:1.4;
+}
+
+
+/* =========================
+   BOTTOM PLAYER
+========================= */
+
+.player{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:90px;
+    background:#181818;
+    border-top:1px solid #333;
+    display:flex;
+    align-items:center;
+    padding:10px 18px;
+    z-index:100;
+}
+
+
+/* CURRENT SONG */
+
+.now-playing{
+    width:30%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.now-playing img{
+    width:55px;
+    height:55px;
+    border-radius:5px;
+    object-fit:cover;
+}
+
+.track-info{
+    min-width:0;
+}
+
+.track-info b,
+.track-info small{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.track-info small{
+    color:#aaa;
+    margin-top:5px;
+}
+
+.like{
+    background:none;
+    border:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+
+/* PLAYER CENTER */
+
+.player-center{
+    width:45%;
+}
+
+.controls{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+}
+
+.controls button{
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.controls .play{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:white;
+    color:black;
+    font-size:16px;
+}
+
+
+/* PROGRESS */
+
+.seek{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:5px;
+}
+
+.seek span{
+    color:#aaa;
+    font-size:11px;
+    min-width:30px;
+    text-align:center;
+}
+
+#progress{
+    flex:1;
+}
+
+
+/* VOLUME */
+
+.volume{
+    width:25%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+}
+
+#volume{
+    width:100px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:70px;
+        padding:20px 10px;
+    }
+
+    .logo{
+        font-size:0;
+    }
+
+    .logo::first-letter{
+        font-size:25px;
+    }
+
+    .menu p,
+    .playlist,
+    .sidebar h4{
+        font-size:0;
+    }
+
+    main{
+        margin-left:70px;
+        padding:15px 12px 115px;
+    }
+
+    #search{
+        width:220px;
+    }
+
+    .quick{
+        grid-template-columns:1fr;
+    }
+
+    .player{
+        height:82px;
+        padding:8px;
+    }
+
+    .now-playing{
+        width:40%;
+    }
+
+    .now-playing img{
+        width:45px;
+        height:45px;
+    }
+
+    .like,
+    .volume{
+        display:none;
+    }
+
+    .player-center{
+        width:60%;
+    }
+
+    .controls{
+        gap:8px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <h1 class="logo">♫ Beatify</h1>
+
+    <div class="menu">
+
+        <p onclick="showHome()">
+            ⌂ Home
+        </p>
+
+        <p onclick="showSearch()">
+            ⌕ Search
+        </p>
+
+        <p onclick="showLibrary()">
+            ▣ Your Library
+        </p>
+
+    </div>
+
+
+    <h4>YOUR PLAYLISTS</h4>
+
+    <p class="playlist">
+        ＋ My Playlist
+    </p>
+
+    <p class="playlist">
+        ♫ Hindi Hits
+    </p>
+
+    <p class="playlist">
+        ♥ Favorites
+    </p>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main>
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <button onclick="history.back()">
+            ‹
+        </button>
+
+        <button onclick="history.forward()">
+            ›
+        </button>
+
+
+        <input
+            id="search"
+            type="text"
+            placeholder="What do you want to play?"
+            oninput="searchSongs()"
+        >
+
+
+        <div class="profile">
+            M
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         HOME
+    ========================= -->
+
+    <section id="home">
+
+        <h2>
+            Good evening
+        </h2>
+
+
+        <div
+            class="quick"
+            id="quickSongs">
+        </div>
+
+
+        <h2>
+            Made for you
+        </h2>
+
+
+        <div
+            class="song-grid"
+            id="songList">
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SEARCH
+    ========================= -->
+
+    <section
+        id="searchPage"
+        style="display:none;">
+
+        <h2>
+            Search Results
+        </h2>
+
+
+        <div
+            class="song-grid"
+            id="searchResults">
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         LIBRARY
+    ========================= -->
+
+    <section
+        id="library"
+        style="display:none;">
+
+        <h2>
+            Your Library
+        </h2>
+
+
+        <div
+            class="song-grid"
+            id="librarySongs">
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     PLAYER
+========================= -->
+
+<div class="player">
+
+
+    <!-- CURRENT SONG -->
+
+    <div class="now-playing">
+
+        <img
+            id="currentImg"
+            src="covers/cover1.jpg"
+            alt="Song Cover"
+        >
+
+
+        <div class="track-info">
+
+            <b id="currentTitle">
+                Select a song
+            </b>
+
+            <small id="currentArtist">
+                Beatify Music
+            </small>
+
+        </div>
+
+
+        <button
+            class="like"
+            id="likeBtn"
+            onclick="likeSong()">
+
+            ♡
+
+        </button>
+
+    </div>
+
+
+    <!-- PLAYER CENTER -->
+
+    <div class="player-center">
+
+
+        <div class="controls">
+
+            <button
+                onclick="toggleShuffle()">
+                🔀
+            </button>
+
+
+            <button
+                onclick="previousSong()">
+                ⏮
+            </button>
+
+
+            <button
+                class="play"
+                id="playBtn"
+                onclick="playPause()">
+
+                ▶
+
+            </button>
+
+
+            <button
+                onclick="nextSong()">
+                ⏭
+            </button>
+
+
+            <button
+                onclick="toggleRepeat()">
+                🔁
+            </button>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="seek">
+
+            <span id="currentTime">
+                0:00
+            </span>
+
+
+            <input
+                id="progress"
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                step="0.1"
+                oninput="seekSong()"
+            >
+
+
+            <span id="duration">
+                0:00
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- VOLUME -->
+
+    <div class="volume">
+
+        🔊
+
+        <input
+            id="volume"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+            oninput="changeVolume()"
+        >
+
+    </div>
+
+</div>
+
+
+<!-- AUDIO -->
+
+<audio id="audio"></audio>
+
+
+<script>
+
+/* =========================
+   SONGS
+========================= */
+
+const songs = [
+
+    {
+        title:"Afreen Afreen",
+
+        artist:
+        "Rahat Fateh Ali Khan & Momina Mustehsan",
+
+        file:"songs/song1.mp3",
+
+        cover:"covers/cover1.jpg"
+    },
+
+
+    {
+        title:"Deewani Mastani",
+
+        artist:"Shreya Ghoshal",
+
+        file:"songs/song2.mp3",
+
+        cover:"covers/cover2.jpg"
+    },
+
+
+    {
+        title:"Dil Ka Jo Haal Hai",
+
+        artist:
+        "Abhijeet Bhattacharya & Shreya Ghoshal",
+
+        file:"songs/song3.mp3",
+
+        cover:"covers/cover3.jpg"
+    },
+
+
+    {
+        title:"Jeene Laga Hoon",
+
+        artist:
+        "Atif Aslam & Shreya Ghoshal",
+
+        file:"songs/song4.mp3",
+
+        cover:"covers/cover4.jpg"
+    },
+
+
+    {
+        title:"Jugraafiya",
+
+        artist:
+        "Udit Narayan & Shreya Ghoshal",
+
+        file:"songs/song5.mp3",
+
+        cover:"covers/cover5.jpg"
+    },
+
+
+    {
+        title:"Kesariya",
+
+        artist:"Arijit Singh",
+
+        file:"songs/song6.mp3",
+
+        cover:"covers/cover6.jpg"
+    },
+
+
+    {
+        title:"Neele Neele Ambar Par",
+
+        artist:"Kishore Kumar",
+
+        file:"songs/song7.mp3",
+
+        cover:"covers/cover7.jpg"
+    },
+
+
+    {
+        title:"Ruposh",
+
+        artist:"Haroon Kadwani",
+
+        file:"songs/song8.mp3",
+
+        cover:"covers/cover8.jpg"
+    }
+
+];
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+const audio =
+document.getElementById("audio");
+
+let currentSong = 0;
+
+let shuffle = false;
+
+let repeat = false;
+
+let liked = false;
+
+
+/* =========================
+   DISPLAY SONGS
+========================= */
+
+function displaySongs(list,id){
+
+    const box =
+    document.getElementById(id);
+
+    box.innerHTML="";
+
+
+    list.forEach(song=>{
+
+        const index =
+        songs.indexOf(song);
+
+
+        const card =
+        document.createElement("div");
+
+
+        card.className="song-card";
+
+
+        card.innerHTML=`
+
+            <img
+                src="${song.cover}"
+                alt="Song Cover"
+            >
+
+            <h3>
+                ${song.title}
+            </h3>
+
+            <p>
+                ${song.artist}
+            </p>
+
+        `;
+
+
+        card.onclick=()=>{
+            playSong(index);
+        };
+
+
+        box.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   QUICK SONGS
+========================= */
+
+function displayQuickSongs(){
+
+    const box =
+    document.getElementById("quickSongs");
+
+    box.innerHTML="";
+
+
+    songs.slice(0,6).forEach(
+        (song,index)=>{
+
+            const item =
+            document.createElement("div");
+
+
+            item.className="quick-item";
+
+
+            item.innerHTML=`
+
+                <img
+                    src="${song.cover}"
+                    alt=""
+                >
+
+                <span>
+                    ${song.title}
+                </span>
+
+            `;
+
+
+            item.onclick=()=>{
+                playSong(index);
+            };
+
+
+            box.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* =========================
+   PLAY SONG
+========================= */
+
+function playSong(index){
+
+    currentSong=index;
+
+
+    const song =
+    songs[currentSong];
+
+
+    audio.src =
+    song.file;
+
+
+    document.getElementById(
+        "currentImg"
+    ).src =
+    song.cover;
+
+
+    document.getElementById(
+        "currentTitle"
+    ).textContent =
+    song.title;
+
+
+    document.getElementById(
+        "currentArtist"
+    ).textContent =
+    song.artist;
+
+
+    audio.play().catch(()=>{
+
+        alert(
+            "Song play nahi hua. Check karo ki songs folder mein song1.mp3 se song8.mp3 files hain."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   PLAY PAUSE
+========================= */
+
+function playPause(){
+
+    if(!audio.src){
+
+        playSong(0);
+
+        return;
+
+    }
+
+
+    if(audio.paused){
+
+        audio.play();
+
+    }
+
+    else{
+
+        audio.pause();
+
+    }
+
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+function nextSong(){
+
+    if(shuffle){
+
+        let next=currentSong;
+
+
+        while(
+            next===currentSong &&
+            songs.length>1
+        ){
+
+            next=
+            Math.floor(
+                Math.random()*songs.length
+            );
+
+        }
+
+
+        currentSong=next;
+
+    }
+
+    else{
+
+        currentSong++;
+
+        if(
+            currentSong>=songs.length
+        ){
+
+            currentSong=0;
+
+        }
+
+    }
+
+
+    playSong(currentSong);
+
+}
+
+
+/* =========================
+   PREVIOUS
+========================= */
+
+function previousSong(){
+
+    if(
+        audio.currentTime>3
+    ){
+
+        audio.currentTime=0;
+
+    }
+
+    else{
+
+        currentSong--;
+
+
+        if(currentSong<0){
+
+            currentSong=
+            songs.length-1;
+
+        }
+
+
+        playSong(currentSong);
+
+    }
+
+}
+
+
+/* =========================
+   SHUFFLE
+========================= */
+
+function toggleShuffle(){
+
+    shuffle=!shuffle;
+
+    alert(
+        shuffle
+        ? "Shuffle ON"
+        : "Shuffle OFF"
+    );
+
+}
+
+
+/* =========================
+   REPEAT
+========================= */
+
+function toggleRepeat(){
+
+    repeat=!repeat;
+
+    alert(
+        repeat
+        ? "Repeat ON"
+        : "Repeat OFF"
+    );
+
+}
+
+
+/* =========================
+   SONG ENDED
+========================= */
+
+audio.addEventListener(
+"ended",
+function(){
+
+    if(repeat){
+
+        playSong(currentSong);
+
+    }
+
+    else{
+
+        nextSong();
+
+    }
+
+});
+
+
+/* =========================
+   LOADED
+========================= */
+
+audio.addEventListener(
+"loadedmetadata",
+function(){
+
+    document.getElementById(
+        "duration"
+    ).textContent=
+    formatTime(audio.duration);
+
+
+    document.getElementById(
+        "progress"
+    ).max=
+    audio.duration;
+
+});
+
+
+/* =========================
+   TIME UPDATE
+========================= */
+
+audio.addEventListener(
+"timeupdate",
+function(){
+
+    document.getElementById(
+        "currentTime"
+    ).textContent=
+    formatTime(audio.currentTime);
+
+
+    document.getElementById(
+        "progress"
+    ).value=
+    audio.currentTime;
+
+});
+
+
+/* =========================
+   PLAY EVENT
+========================= */
+
+audio.addEventListener(
+"play",
+function(){
+
+    document.getElementById(
+        "playBtn"
+    ).textContent="⏸";
+
+});
+
+
+/* =========================
+   PAUSE EVENT
+========================= */
+
+audio.addEventListener(
+"pause",
+function(){
+
+    document.getElementById(
+        "playBtn"
+    ).textContent="▶";
+
+});
+
+
+/* =========================
+   SEEK
+========================= */
+
+function seekSong(){
+
+    audio.currentTime=
+    Number(
+        document.getElementById(
+            "progress"
+        ).value
+    );
+
+}
+
+
+/* =========================
+   VOLUME
+========================= */
+
+function changeVolume(){
+
+    audio.volume=
+    Number(
+        document.getElementById(
+            "volume"
+        ).value
+    );
+
+}
+
+
+/* =========================
+   FORMAT TIME
+========================= */
+
+function formatTime(seconds){
+
+    if(
+        !Number.isFinite(seconds)
+    ){
+
+        return "0:00";
+
+    }
+
+
+    const minutes=
+    Math.floor(seconds/60);
+
+
+    const secs=
+    Math.floor(seconds%60)
+    .toString()
+    .padStart(2,"0");
+
+
+    return minutes+":"+secs;
+
+}
+
+
+/* =========================
+   LIKE
+========================= */
+
+function likeSong(){
+
+    liked=!liked;
+
+
+    document.getElementById(
+        "likeBtn"
+    ).textContent=
+    liked ? "♥" : "♡";
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function showHome(){
+
+    document.getElementById(
+        "home"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "searchPage"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "library"
+    ).style.display="none";
+
+}
+
+
+/* =========================
+   SEARCH PAGE
+========================= */
+
+function showSearch(){
+
+    document.getElementById(
+        "home"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "searchPage"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "library"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "search"
+    ).focus();
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchSongs(){
+
+    const query=
+    document.getElementById(
+        "search"
+    ).value
+    .toLowerCase()
+    .trim();
+
+
+    document.getElementById(
+        "home"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "searchPage"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "library"
+    ).style.display="none";
+
+
+    const results=
+    songs.filter(song=>
+
+        song.title
+        .toLowerCase()
+        .includes(query)
+
+        ||
+
+        song.artist
+        .toLowerCase()
+        .includes(query)
+
+    );
+
+
+    displaySongs(
+        results,
+        "searchResults"
+    );
+
+}
+
+
+/* =========================
+   LIBRARY
+========================= */
+
+function showLibrary(){
+
+    document.getElementById(
+        "home"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "searchPage"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "library"
+    ).style.display="block";
+
+
+    displaySongs(
+        songs,
+        "librarySongs"
+    );
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+displayQuickSongs();
+
+displaySongs(
+    songs,
+    "songList"
+);
+
+audio.volume=1;
+
+</script>
+
+</body>
+</html>
